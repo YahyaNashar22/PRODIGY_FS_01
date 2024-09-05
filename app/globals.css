@@ -31,3 +31,30 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .flexColContainer {
+    @apply flex flex-col justify-center items-center text-center;
+  }
+
+  .signBtn {
+    @apply relative px-4 py-2 bg-transparent font-semibold transition-colors duration-300;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    background-color: transparent;
+  }
+
+  .signBtn::before {
+    content: "";
+    @apply absolute inset-0 border-2 border-transparent;
+    border-color: currentColor; /* Use the button text color for the border */
+    transform: scale(0);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    transform-origin: center;
+  }
+
+  .signBtn:hover::before {
+    transform: scale(1);
+  }
+}
