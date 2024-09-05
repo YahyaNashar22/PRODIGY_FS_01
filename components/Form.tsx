@@ -52,9 +52,23 @@ const Form = ({
           username: formData.username,
           password: formData.password,
         })
-        .then((result) => setUser(result.data.userToken.payload))
-        .catch((error) => console.log(error));
-    } catch (error) {
+        .then((result) => {
+          if (result.status === 200) setUser(result.data.userToken.payload);
+        })
+        .catch((error) => {
+          if (axios.isAxiosError(error) && error.response) {
+            if (error.response.status === 400) {
+              alert(error.response.data.message);
+            } else if (error.response.status === 404) {
+              alert("Username does not exist");
+            } else if (error.response.status === 401) {
+              alert("Wrong password, please try again");
+            } else {
+              console.log(error);
+            }
+          }
+        });
+    } catch (error: any) {
       console.log(error);
     }
   };
@@ -79,8 +93,6 @@ const Form = ({
       console.log(error);
     }
   };
-
-  console.log({ formData });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
